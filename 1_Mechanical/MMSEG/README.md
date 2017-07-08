@@ -52,7 +52,7 @@ mmseg要求获得三词组的全切分，用当前字查词典获得所有以该
 
 大致产生过程如下图1
 
-![树型模型](https://github.com/raven1989/NaturalLanguageProcessing/tree/master/1_Mechanical/MMSEG/photo/model_3word_trunk_tree.png)
+![树型模型](https://github.com/raven1989/NaturalLanguageProcessing/blob/master/1_Mechanical/MMSEG/photo/model_3word_trunk_tree.png)
 
 再将图1进一步抽象：
 
