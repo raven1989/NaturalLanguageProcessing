@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # 算法复杂度是o(N)
 import sys, traceback
-sys.path.append('../Dictionary')
+sys.path.append('../0_Dictionary')
 from DictionaryFactory import DACTORY
 
 def maximumMatching(text):
