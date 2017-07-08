@@ -85,5 +85,7 @@ example: (0,2,3,5), (0,2,4,5)
 > 参考文章：
 
 [MMSEG: A Word Identification System for Mandarin Chinese Text Based on Two Variants of the Maximum Matching Algorithm](http://technology.chtsai.org/mmseg/)
+
 [mmseg分词算法及实现](http://blog.csdn.net/daniel_ustc/article/details/50488040)
+
 [关于MMSEG分词算法](http://blog.csdn.net/watkinsong/article/details/37872683)
