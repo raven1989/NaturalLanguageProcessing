@@ -10,7 +10,7 @@ class NaiveDictionary:
   def loadSougouDictionary(self):
     self.dic_['total'] = 0
     self.dic_['maxTermSize'] = 0
-    for line in open(__pwd__+'/dict/SogouLabDic.utf8.dic'):
+    for line in open(__pwd__+'/../dict/SogouLabDic.utf8.dic'):
       col = line.split('\t')
       if len(col)<3:
         continue

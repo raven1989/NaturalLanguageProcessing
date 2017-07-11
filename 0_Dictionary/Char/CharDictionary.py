@@ -9,7 +9,7 @@ class CharDictionary:
     self.load_char_dictionary()
   def load_char_dictionary(self):
     self.dic_['total'] = 0
-    for line in open(__pwd__+'/dict/chars.dic'):
+    for line in open(__pwd__+'/../dict/chars.dic'):
       col = line.split(' ')
       if len(col)<2:
         continue

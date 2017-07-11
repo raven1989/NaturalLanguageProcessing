@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import sys, traceback
-import NaiveDictionary
-import CharDictionary
+import Naive.NaiveDictionary as NaiveDictionary
+import Char.CharDictionary as CharDictionary
 
 class DictionaryFactory:
   def __init__(self):
