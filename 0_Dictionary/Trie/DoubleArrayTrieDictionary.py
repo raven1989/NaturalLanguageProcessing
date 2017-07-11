@@ -22,3 +22,4 @@ class CharDictionary:
 
 if __name__ == '__main__':
   print ord('一'.decode('utf-8'))
+  print ord('万'.decode('utf-8'))
