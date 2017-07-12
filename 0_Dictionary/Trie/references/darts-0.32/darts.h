@@ -397,7 +397,7 @@ namespace Darts {
           return 0;
         }
 
-        //cur!=prev说明出现了新的字，这时候需要添加节点
+        // cur!=prev 说明出现了新的字，这时候需要添加节点
         if (cur != prev || siblings.empty()) {
           node_t tmp_node;
           tmp_node.depth = parent.depth + 1;
