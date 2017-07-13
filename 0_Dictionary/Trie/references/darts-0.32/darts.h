@@ -423,6 +423,8 @@ namespace Darts {
       if (error_ < 0) return 0;
 
       size_t begin = 0;
+      // 因为base[s]+ siblings[0].code = pos <=> base[s] = pos-siblings[0].code
+      // 初始值应该至少为siblings[0].code，这样base才不会为负数
       size_t pos   = _max((size_t)siblings[0].code + 1, next_check_pos_) - 1;
       size_t nonzero_num = 0;
       int    first = 0;
@@ -435,14 +437,17 @@ namespace Darts {
 
         if (alloc_size_ <= pos) resize(pos + 1);
 
+        // 当前的check[pos]不可用
         if (array_[pos].check) {
           ++nonzero_num;
           continue;
+        // 当前的check[pos]可用
         } else if (!first) {
           next_check_pos_ = pos;
           first = 1;
         }
 
+        // 计算base[s]的值
         begin = pos - siblings[0].code;
         if (alloc_size_ <= (begin + siblings[siblings.size()-1].code))
           resize(static_cast<size_t>(alloc_size_ *
@@ -450,6 +455,7 @@ namespace Darts {
 
         if (used_[begin]) continue;
 
+        // 检查从begin开始，是否每一个check[begin+siblings[i].code]可用
         for (size_t i = 1; i < siblings.size(); ++i)
           if (array_[begin + siblings[i].code].check != 0) goto next;
 
@@ -464,6 +470,7 @@ namespace Darts {
       if (1.0 * nonzero_num/(pos - next_check_pos_ + 1) >= 0.95)
         next_check_pos_ = pos;
 
+      // 这是base[begin]，这是s->t中的t，base[t]表示下一个状态
       used_[begin] = 1;
       size_ = _max(size_,
                    begin +
@@ -476,7 +483,10 @@ namespace Darts {
         std::vector <node_t> new_siblings;
 
         if (!fetch(siblings[i], new_siblings)) {
+          // 如果是叶子节点，就把base设置为-(parent.left+1)
+          // parent.left+1就是parent里的第几个词
           array_[begin + siblings[i].code].base =
+            // value是用户传的额外的数组，用来存储客制化的编码词
             value_ ?
             static_cast<array_type_>(-value_[siblings[i].left]-1) :
             static_cast<array_type_>(-siblings[i].left-1);
@@ -486,10 +496,12 @@ namespace Darts {
             return 0;
           }
 
+          // 又搞定了一个词，显示下进度
           ++progress_;
           if (progress_func_)(*progress_func_)(progress_, key_size_);
 
         } else {
+          // h就是insert找到的base
           size_t h = insert(new_siblings);
           array_[begin + siblings[i].code].base = h;
         }
