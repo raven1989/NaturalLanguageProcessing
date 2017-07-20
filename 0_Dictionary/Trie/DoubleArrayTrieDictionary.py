@@ -121,7 +121,7 @@ class DoubleArrayTrieDictionary:
     f = None
     try:
       f = file(to_save_file, 'wb')
-      pickle.dump(self, f)
+      pickle.dump(self.array, f)
     except:
       traceback.print_exc()
     finally:
@@ -132,7 +132,7 @@ class DoubleArrayTrieDictionary:
     f = None
     try:
       f = file(from_load_file, 'rb')
-      self = pickle.load(f)
+      self.array = pickle.load(f)
     except:
       traceback.print_exc()
       return False
@@ -141,7 +141,7 @@ class DoubleArrayTrieDictionary:
         f.close()
     return True
 
-  def initialize(self, dict_name):
+  def initialize(self, dict_name=__pwd__+'/../dict/SogouLabDic.utf8.dic'):
     if not self.load(dict_name):
       self.build(dict_name)
       self.save(dict_name)
@@ -165,14 +165,17 @@ class DoubleArrayTrieDictionary:
 
 if __name__ == '__main__':
   da = DoubleArrayTrieDictionary()
-  # da.build('test1.dic')
   # da.initialize(__pwd__+'/../dict/test.dic')
-  da.build(__pwd__+'/../dict/test.dic')
-  # da.build(__pwd__+'/../dict/test_unit.dic')
+  # da.build(__pwd__+'/../dict/test.dic')
+  # da.initialize(__pwd__+'/../dict/test.dic')
   # da.build('test_10000.dic')
+  # da.initialize(__pwd__+'/../dict/test_10000.dic')
+  da.initialize()
   # da.build('SogouLabDic.utf8.dic')
+  # da.initialize('SogouLabDic.utf8.dic')
   print da.statistics()
   print da.query('一举'.decode('utf-8'))
   print da.query('一举一动'.decode('utf-8'))
   print da.query('万能胶水'.decode('utf-8'))
   print da.query('万能胶'.decode('utf-8'))
+  print da.query('化为己有'.decode('utf-8'))
