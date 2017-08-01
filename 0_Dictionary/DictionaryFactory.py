@@ -21,7 +21,7 @@ class DictionaryFactory:
   def get_da_trie_dictionary(self):
     if not self.da_trie_:
       self.da_trie_ = DoubleArrayTrieDictionary.DoubleArrayTrieDictionary()
-      self.da_trie_.initialize()
+      print self.da_trie_.initialize()
     return self.da_trie_
 
 DACTORY = DictionaryFactory()
@@ -31,4 +31,5 @@ if __name__ == '__main__':
   print DACTORY.get_char_dictionary().query('中')
   print DACTORY.get_da_trie_dictionary().query('彼方'.decode('utf-8'))
   print DACTORY.get_da_trie_dictionary().query('武汉'.decode('utf-8'))
+  # print DACTORY.get_da_trie_dictionary().statistics()
 

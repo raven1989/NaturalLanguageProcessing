@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import sys, traceback
+import sys, time, traceback
 import os, pickle
 from  TrieDictionary import TrieNode as TrieNode
 __pwd__ = os.path.dirname(os.path.realpath(__file__))
@@ -19,6 +19,7 @@ class DoubleArrayTrieDictionary:
     self.progress = 0
     self.base_used_cnt = 0
     self.check_used_cnt = 0
+    self.load_cost = 0
   def __resize__(self, size):
     if len(self.array)<size:
       new_array = [unit_t(0,0) for x in xrange(0,size)]
@@ -114,7 +115,7 @@ class DoubleArrayTrieDictionary:
     # print [str(x) for x in self.array]
     self.used = None
   def statistics(self):
-    return 'size in bytes: '+str(sys.getsizeof(self.array))+'\ncheck used rate: '+str(self.check_used_cnt)+'/'+str(len(self.array))+'\nbase used rate: '+str(self.base_used_cnt)+'/'+str(len(self.array))
+    return 'size in bytes: '+str(sys.getsizeof(self.array))+'\nload cost: '+str(self.load_cost)+'\ncheck used rate: '+str(self.check_used_cnt)+'/'+str(len(self.array))+'\nbase used rate: '+str(self.base_used_cnt)+'/'+str(len(self.array))
   
   def save(self, name):
     to_save_file = name+'.bin'
@@ -132,7 +133,10 @@ class DoubleArrayTrieDictionary:
     f = None
     try:
       f = file(from_load_file, 'rb')
+      b = time.clock()
       self.array = pickle.load(f)
+      e = time.clock()
+      self.load_cost = e-b
     except:
       traceback.print_exc()
       return False
@@ -145,6 +149,7 @@ class DoubleArrayTrieDictionary:
     if not self.load(dict_name):
       self.build(dict_name)
       self.save(dict_name)
+    return self.statistics()
 
   def query(self, term):
     state = 0
@@ -173,7 +178,7 @@ if __name__ == '__main__':
   da.initialize()
   # da.build('SogouLabDic.utf8.dic')
   # da.initialize('SogouLabDic.utf8.dic')
-  print da.statistics()
+  # print da.statistics()
   print da.query('一举'.decode('utf-8'))
   print da.query('一举一动'.decode('utf-8'))
   print da.query('万能胶水'.decode('utf-8'))
