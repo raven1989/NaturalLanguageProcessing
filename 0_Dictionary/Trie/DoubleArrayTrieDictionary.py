@@ -20,6 +20,8 @@ class DoubleArrayTrieDictionary:
     self.base_used_cnt = 0
     self.check_used_cnt = 0
     self.load_cost = 0
+    self.build_cost = 0
+    self.max_word_length = 0
   def __resize__(self, size):
     if len(self.array)<size:
       new_array = [unit_t(0,0) for x in xrange(0,size)]
@@ -43,6 +45,8 @@ class DoubleArrayTrieDictionary:
           new_node = TrieNode()
           new_node.code = cur
           new_node.depth = parent.depth+1
+          if new_node.depth > self.max_word_length:
+            self.max_word_length = new_node.depth
           new_node.left = i
           if len(parent.siblings)>0:
             parent.siblings[-1].right = i
@@ -56,7 +60,7 @@ class DoubleArrayTrieDictionary:
     cur_s = 1
     while True:
       if not cur_s+node.siblings[-1].code<len(self.array):
-        self.__resize__(cur_s+node.siblings[-1].code+1+128)
+        self.__resize__(cur_s+node.siblings[-1].code+1+1024)
       if self.used[cur_s]:
         cur_s += 1
         continue
@@ -115,14 +119,14 @@ class DoubleArrayTrieDictionary:
     # print [str(x) for x in self.array]
     self.used = None
   def statistics(self):
-    return 'size in bytes: '+str(sys.getsizeof(self.array))+'\nload cost: '+str(self.load_cost)+'\ncheck used rate: '+str(self.check_used_cnt)+'/'+str(len(self.array))+'\nbase used rate: '+str(self.base_used_cnt)+'/'+str(len(self.array))
+    return 'size in bytes: '+str(sys.getsizeof(self.array))+'\nbuild cost: '+str(self.build_cost)+'\nload cost: '+str(self.load_cost)+'\ncheck used rate: '+str(self.check_used_cnt)+'/'+str(len(self.array))+'\nbase used rate: '+str(self.base_used_cnt)+'/'+str(len(self.array))+'\nmax word length: '+str(self.max_word_length)
   
   def save(self, name):
     to_save_file = name+'.bin'
     f = None
     try:
       f = file(to_save_file, 'wb')
-      pickle.dump(self.array, f)
+      pickle.dump((self.max_word_length,self.array), f)
     except:
       traceback.print_exc()
     finally:
@@ -134,7 +138,7 @@ class DoubleArrayTrieDictionary:
     try:
       f = file(from_load_file, 'rb')
       b = time.clock()
-      self.array = pickle.load(f)
+      self.max_word_length, self.array = pickle.load(f)
       e = time.clock()
       self.load_cost = e-b
     except:
@@ -147,7 +151,10 @@ class DoubleArrayTrieDictionary:
 
   def initialize(self, dict_name=__pwd__+'/../dict/SogouLabDic.utf8.dic'):
     if not self.load(dict_name):
+      b = time.clock()
       self.build(dict_name)
+      e = time.clock()
+      self.build_cost = e-b
       self.save(dict_name)
     return self.statistics()
 
@@ -172,13 +179,13 @@ if __name__ == '__main__':
   da = DoubleArrayTrieDictionary()
   # da.initialize(__pwd__+'/../dict/test.dic')
   # da.build(__pwd__+'/../dict/test.dic')
-  # da.initialize(__pwd__+'/../dict/test.dic')
+  # print da.initialize(__pwd__+'/../dict/test.dic')
   # da.build('test_10000.dic')
   # da.initialize(__pwd__+'/../dict/test_10000.dic')
-  da.initialize()
   # da.build('SogouLabDic.utf8.dic')
   # da.initialize('SogouLabDic.utf8.dic')
   # print da.statistics()
+  print da.initialize()
   print da.query('一举'.decode('utf-8'))
   print da.query('一举一动'.decode('utf-8'))
   print da.query('万能胶水'.decode('utf-8'))
