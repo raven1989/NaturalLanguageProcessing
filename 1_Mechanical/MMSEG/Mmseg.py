@@ -132,4 +132,14 @@ if __name__ == '__main__':
   print '|'.join(complex_mmseg('武汉市长江大桥'))
   print '|'.join(complex_mmseg('声明科学'))
   print '|'.join(complex_mmseg('设施和服务'))
+  print '|'.join(complex_mmseg('差点没上上上上海的车'))
+  print '|'.join(complex_mmseg('好在我一把把把把住了'))
+  print '|'.join(complex_mmseg('我也想过过过儿过过的生活'))
+  print '|'.join(complex_mmseg('用毒毒毒蛇毒蛇会不会被毒毒死'))
+  print '|'.join(complex_mmseg('校服上除了校徽别别别的，让你们别别别的别别别的你们非得别别的'))
+  print '|'.join(complex_mmseg('长安汽车工程总院动力研究院'))
+  print '|'.join(complex_mmseg('欧诺迪手表'))
+  print '|'.join(complex_mmseg('遂宁市长热线'))
+  print '|'.join(complex_mmseg('苹果ios12'))
+
 
