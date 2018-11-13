@@ -11,6 +11,26 @@ def siple_mmseg(text):
 
 #--------------------------------------------------------------------------------
 
+def segment(text):
+  start = 0
+  cur = 0
+  t_last = False
+  sub_text = []
+  while cur<len(text):
+    t_cur = text[cur].isalnum() or text[cur] in ['.','-','+','/','(',')']
+    if cur>0 and t_last!=t_cur:
+      sub_text.append(((not t_last), text[start:cur]))
+      start = cur
+    t_last = t_cur
+    cur += 1
+  else:
+    sub_text.append(((not t_last), text[start:cur]))
+  # print sub_text
+  segments = []
+  for to_seg, t in sub_text:
+    segments += complex_mmseg(t) if to_seg else [t]
+  return segments
+
 def complex_mmseg(text):
   unicode_text = text.decode('utf-8')
   text_length = len(unicode_text)
@@ -59,9 +79,11 @@ def get_longest_triplets_for_1st_char(unicode_text, start=0):
   def forward_matching(text):
     length = 1
     max_length = min(len(text), DACTORY.getNaiveDictionary().query('maxTermSize'))
+    # is_digit_alphabet = lambda x: x.isalnum() or x in ['.','-','+','/','(',')']
     while length<=max_length:
       # condition length==1 是为了将单字也输出为结果，因为词典里面没有包含单字
       if length==1 or DACTORY.getNaiveDictionary().query(text[:length].encode('utf-8')):
+        # print text[length-1]
         yield length
       length += 1
   tree = [root]
@@ -141,5 +163,8 @@ if __name__ == '__main__':
   print '|'.join(complex_mmseg('欧诺迪手表'))
   print '|'.join(complex_mmseg('遂宁市长热线'))
   print '|'.join(complex_mmseg('苹果ios12'))
-
+  print '|'.join(segment('苹果ios12'))
+  print '|'.join(segment('08年本田crv是国几'))
+  print '|'.join(segment('环境（绿化，卫生不错，挺好的）；公共区域的设施也不错（比如说小区里的一些全民健身的健身器材，有一些小朋友的游乐区;品质（环境和配套比较好）；品牌（公司打，开发商大）'))
+  print '|'.join(segment('外观呈现浓艳的琥珀金 :看起来比较有档次给人想喝的感觉，口感顺滑醇厚：容易入口,口感丰富多变:喝起来有层次感更有感觉'))
 

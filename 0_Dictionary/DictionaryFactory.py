@@ -29,7 +29,7 @@ DACTORY = DictionaryFactory()
 if __name__ == '__main__':
   print DACTORY.getNaiveDictionary().query('中国人')
   print DACTORY.get_char_dictionary().query('中')
-  print DACTORY.get_da_trie_dictionary().query('彼方'.decode('utf-8'))
-  print DACTORY.get_da_trie_dictionary().query('武汉'.decode('utf-8'))
+  # print DACTORY.get_da_trie_dictionary().query('彼方'.decode('utf-8'))
+  # print DACTORY.get_da_trie_dictionary().query('武汉'.decode('utf-8'))
   # print DACTORY.get_da_trie_dictionary().statistics()
 
